@@ -48,12 +48,25 @@ def collect_info():
         except PermissionError:
             continue
 
-    print("="*40, "Network Information", "="*40)
+print("="*40, "Network Information", "="*40)
     hostname = socket.gethostname()
-    IPAddr = socket.gethostbyname(hostname)
     print(f"Hostname: {hostname}")
+    
+    # Безопасный способ получить IP без DNS
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        s.connect(('8.8.8.8', 80))
+        IPAddr = s.getsockname()[0]
+    except Exception:
+        IPAddr = '127.0.0.1'
+    finally:
+        s.close()
+        
     print(f"IP Address: {IPAddr}")
-    print(f"MAC Address: {':'.join(['{:02x}'.format((uuid.getnode() >> elements) & 0xff) for elements in range(0,2*6,2)][::-1])}")
+    
+    # MAC-адрес
+    mac = ':'.join(['{:02x}'.format((uuid.getnode() >> elements) & 0xff) for elements in range(0,2*6,2)][::-1])
+    print(f"MAC Address: {mac}")
 
 if __name__ == "__main__":
     # Если нет psutil, скажет как установить
