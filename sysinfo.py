@@ -1,7 +1,6 @@
 import platform
 import socket
 import uuid
-import os
 import psutil
 
 def get_size(bytes, suffix="B"):
@@ -48,7 +47,8 @@ def collect_info():
         except PermissionError:
             continue
 
-print("="*40, "Network Information", "="*40)
+    # --- ИСПРАВЛЕННЫЙ БЛОК СЕТИ (отступы выровнены) ---
+    print("="*40, "Network Information", "="*40)
     hostname = socket.gethostname()
     print(f"Hostname: {hostname}")
     
